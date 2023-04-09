@@ -19,11 +19,11 @@ function createTable() {
     num = 1
     output += "<tr>"
     const typedrops =
-        `<option value='---'>none</option>` +
+        `<option value='none'>none</option>` +
         types.reduce((acc, curr) => `${acc}<option value=${curr}>${capitalize(curr)}</option>`, "")
 
     do {
-        output += `<td><select name='type${num}'>${typedrops}</select></td>`
+        output += `<td><select onchange='gemUpdated()' name='type${num}'>${typedrops}</select></td>`
     } while(++num <= max)
     output += "</tr>"
 
@@ -31,11 +31,11 @@ function createTable() {
     num = 1
     output += "<tr>"
     const qualitydrops =
-        `<option value='---'>none</option>` +
+        `<option value='none'>none</option>` +
         qualities.reduce((acc, curr) => `${acc}<option value=${curr}>${capitalize(curr)}</option>`, "")
 
     do {
-        output += `<td><select name='quality${num}'>${qualitydrops}</select></td>`
+        output += `<td><select onchange='gemUpdated()' name='quality${num}'>${qualitydrops}</select></td>`
     } while(++num <= max)
     output += "</tr>"
 
