@@ -68,6 +68,8 @@ function generateEffects() {
 
 function printEffects() {
     const labels = Object.keys(effects)
+    
+    labels.sort()
 
     for(const label of labels) {
         if(effects[label].value <= 0) continue
