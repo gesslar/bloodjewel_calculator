@@ -46,15 +46,16 @@ function generateEffects() {
         while(bonuses-- > 0) {
             const title = bonus[bonuses].title
             const name = bonus[bonuses].name
+            const notation = bonus[bonuses].notation || ""
             let bonus_value = bonus[bonuses].values[quality]
             let effect = effects[title]
 
             if(effect === undefined) effect = {
                 value: 0,
-                name: name
+                name: name,
+                notation: notation
             }
 
-            console.log(usedTypes.indexOf(type))
             if(usedTypes.indexOf(type) > -1) {
                 bonus_value = Math.floor(bonus_value / diminishing_factor)
             }
@@ -71,6 +72,6 @@ function printEffects() {
     for(const label of labels) {
         if(effects[label].value <= 0) continue
 
-        output.innerHTML += `<p><strong>${label}:</strong> ${effects[label].value}\n`
+        output.innerHTML += `<p><strong>${label}:</strong> ${effects[label].value}${effects[label].notation}\n`
     }
 }

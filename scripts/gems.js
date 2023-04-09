@@ -31,11 +31,11 @@ const gems = {
     bellicose: [
         {
             title: "Max HP",
-            name: "max_health", values: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50,]
+            name: "max_health", values: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50,],
         },
         {
             title: "Natural AC",
-            name: "natural_armor", values: [0, 1, 1, 2, 2, 3, 3, 4, 4, 5,]
+            name: "natural_armor", values: [0, 1, 1, 2, 2, 3, 3, 4, 4, 5,],
         }
     ],
     catalytic: [
@@ -46,6 +46,7 @@ const gems = {
         {
             title: "Elemental Resist",
             name: "elemental_resist", values: [2, 3, 3, 4, 4, 5, 5, 5, 6, 7,],
+            notation: "R",
         }
     ],
     cerebral: [
@@ -76,6 +77,7 @@ const gems = {
         {
             title: "Armor Penetration",
             name: "resist_armor", values: [0, 1, 1, 2, 2, 3, 3, 4, 5, 6,],
+            notation: "R",
         }
     ],
     enthralling: [
@@ -96,12 +98,14 @@ const gems = {
         {
             title: "Resist Physical",
             name: "resist_physical", values: [1, 2, 2, 3, 3, 4, 4, 5, 5, 6,],
+            notation: "R",
         }
     ],
     mercantile: [
         {
             title: "Critical Strike Chance",
             name: "critical_strike", values: [1, 2, 2, 3, 3, 4, 4, 5, 5, 6,],
+            notation: "%",
         },
         {
             title: "Rest Regen",
@@ -116,6 +120,7 @@ const gems = {
         {
             title: "Style Critical Chance",
             name: "critical_style", values: [0, 1, 2, 2, 3, 3, 4, 4, 5, 5,],
+            notation: "%",
         }
     ],
     perfidious: [
@@ -136,6 +141,7 @@ const gems = {
         {
             title: "Style Critical Chance",
             name: "critical_style", values: [0, 1, 2, 2, 3, 3, 4, 4, 5, 5,],
+            notation: "%",
         }
     ]
 }
