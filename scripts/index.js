@@ -1,4 +1,5 @@
-// const debug = document.getElementById("debug")
+const main = document.getElementById("main")
+let max_gems = 2
 
 createPaster()
 createTable()
@@ -27,9 +28,26 @@ function paste() {
     // Jewel Slot 5:  imperfect bellicose bloodjewel
     // Jewel Slot 6:  polished mercantile bloodjewel
 
+    // Compose a regex comprised of all of the gem qualities and types for parsing
+    // the lines
+    const qualityRegex = qualities.join("|")
+    const typeRegex = types.join("|")
+    const gemRegex = new RegExp(`(${qualityRegex}) (${typeRegex})`)
+
+
     const filtered = lines.filter((line) => {
-        return line.match(/Jewel Slot \d+:  (imperfect|polished|flawless|perfect|luminous|wondrous) (bellicose|catalytic|cerebral|devout|ensorcelled|enthralling|fanatical|mercantile|necromantic|perfidious|savage) bloodjewel/)
+        return line.match(gemRegex)
     })
+
+    // Do we have more than the max_gems? If so, update the max_gems
+    // and redraw the table
+console.info(`Length: ${filtered.length}, Max: ${max_gems}`)
+    if(filtered.length > max_gems) {
+        document.getElementById("spinner").value = filtered.length
+        max_gems = filtered.length
+        createTable()
+        console.info(`Max gems updated to ${max_gems}`)
+    }
 
     // clear all selects
     for(const select of selects) {
@@ -39,7 +57,7 @@ function paste() {
     // Use regex to extract the gem quality and type from each line using the
     // map function to create an array of arrays
     const gemData = filtered.map((line) => {
-        const match = line.match(/Jewel Slot \d+:  (imperfect|polished|flawless|perfect|luminous|wondrous) (bellicose|catalytic|cerebral|devout|ensorcelled|enthralling|fanatical|mercantile|necromantic|perfidious|savage) bloodjewel/)
+        const match = line.match(gemRegex)
         return [match[1], match[2]]
     })
 
@@ -53,7 +71,7 @@ function paste() {
         const typeIndex = types.indexOf(type)
 
         selects[num].value = qualities[qualityIndex]
-        selects[num + 8].value = types[typeIndex]
+        selects[num + max_gems].value = types[typeIndex]
 
         num++
     }
@@ -63,7 +81,7 @@ function paste() {
 
 function createTable() {
     let output = ""
-    let num = 1, max = 8
+    let num = 1, max = max_gems
 
     output = "<table>"
 
@@ -99,9 +117,23 @@ function createTable() {
     output += "</tr>"
 
     // Write the table to the document
-    document.getElementById("main").innerHTML = output
+    main.innerHTML = output
 }
 
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
+
+document.getElementById("spinner").addEventListener("change", function () {
+    const newValue = parseInt(this.value, 10) // Convert the value from string to number
+
+    if (newValue >= 2 && newValue <= 15) {
+        max_gems = newValue // Update the global variable max_gems
+        createTable();       // Call the function to redraw the table
+    } else {
+        console.error("Invalid number of gems: ", newValue)
+    }
+
+    resetGems()
+    document.getElementById("output").innerHTML = ""
+});

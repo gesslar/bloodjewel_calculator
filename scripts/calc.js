@@ -14,6 +14,13 @@ function gemUpdated() {
     printEffects()
 }
 
+function resetGems() {
+    selectedGems.length = 0
+    effects = {}
+
+    generateEffects()
+}
+
 function buildSelectedGems() {
     let numSelects = selects.length / 2
     const maxSelects = numSelects
@@ -35,36 +42,53 @@ function buildSelectedGems() {
 }
 
 function generateEffects() {
-    const usedTypes = []
+    effects = {};
+    let allBonuses = {};
 
-    effects = {}
+    // First, gather all bonuses for each type
+    selectedGems.forEach(gem => {
+        const { type, quality } = gem;
+        const bonuses = gems[type];
 
-    for(const gem of selectedGems) {
-        const {type, quality} = gem
-        const bonus = gems[type]
-        let bonuses = bonus.length
-
-        while(bonuses-- > 0) {
-            const title = bonus[bonuses].title
-            const name = bonus[bonuses].name
-            const notation = bonus[bonuses].notation || ""
-            let bonus_value = bonus[bonuses].values[quality]
-            let effect = effects[title]
-
-            if(effect === undefined) effect = {
-                value: 0,
-                name: name,
-                notation: notation
+        bonuses.forEach(bonus => {
+            const { title, values } = bonus;
+            if (!allBonuses[title]) {
+                allBonuses[title] = [];
             }
+            allBonuses[title].push(values[quality]);
+        });
+    });
 
-            if(usedTypes.indexOf(type) > -1) {
-                bonus_value = bonus_value / diminishing_factor
-            }
-            effect.value += bonus_value
-            effects[title] = effect
+    // Now process each type of bonus with diminishing returns
+    Object.keys(allBonuses).forEach(title => {
+        const values = allBonuses[title];
+        if (values.length === 0) return;
+
+        // Sort values from highest to lowest
+        values.sort((a, b) => b - a);
+
+        const mainValue = values[0]; // The highest value, no diminishing returns applied
+        let totalValue = mainValue;
+
+        if (values.length > 1) {
+            // Apply diminishing returns to the sum of the remaining values
+            const remainder = values.slice(1);
+            const diminishedSum = remainder.reduce((acc, val) => acc + val, 0) / diminishing_factor;
+
+            totalValue += diminishedSum;
         }
-        usedTypes.push(type)
-    }
+
+        // Ensure we have initial setup for this effect in the main effects object
+        if (!effects[title]) {
+            effects[title] = {
+                value: 0,
+                name: gems[selectedGems[0].type][0].name, // Assuming name and notation are consistent per title
+                notation: gems[selectedGems[0].type][0].notation || ""
+            };
+        }
+
+        effects[title].value += totalValue;
+    });
 }
 
 function floorValues() {
