@@ -18,7 +18,12 @@ function resetGems() {
     selectedGems.length = 0
     effects = {}
 
-    generateEffects()
+    // iterate through all of the selects and reset them to the first option
+    for(const select of selects) {
+        select.selectedIndex = 0
+    }
+
+    gemUpdated()
 }
 
 function buildSelectedGems() {
@@ -113,6 +118,6 @@ function printEffects() {
     for(const label of labels) {
         if(effects[label].value <= 0) continue
 
-        output.innerHTML += `<p><span class="effect_label">${label}:</span> <span class="effect_value">${effects[label].value}${effects[label].notation}</span>\n`
+        output.innerHTML += `<div><span class="effect_label">${label}:</span> <span class="effect_value">${effects[label].value}${effects[label].notation}</span></div>`
     }
 }

@@ -5,7 +5,6 @@
 }
 
 select, option, input {
-    width: 125px;
     background-color: black;
     color: white;
     font-family: 'Cascadia Mono Light', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
@@ -32,12 +31,13 @@ textarea {
     background-color: #ffa600;
     color: black;
     font-family: 'Cascadia Mono Light', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
+    font-weight: bold;
     border: none;
     padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
     margin: 4px 2px;
     cursor: pointer;
 }
@@ -88,3 +88,8 @@ textarea {
 
 .select {
     width: 100%;
+}
+
+#output {
+    margin-top: 1em ;
+}
