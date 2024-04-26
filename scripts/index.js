@@ -1,5 +1,5 @@
 const main = document.getElementById("main")
-let max_gems = 2
+let max_gems = 12
 
 createPaster()
 createTable()
@@ -8,129 +8,103 @@ function createPaster() {
     const paster = document.getElementById("paster")
     let output = ""
 
-    output += "<button onclick='paste()'>Paste</button>"
-    output += "<textarea id='pasted'></textarea>"
+    output = `
+    <div><h2>Paste your gems here</h2></div>
+    <div><textarea id="pasted"></textarea></div>
+    <span><button class="button pastebutton" id="confirmpaste" onclick='paste()'>📋 Confirm Paste</button></span>
+    <span><button class="button pastebutton" id="cancelpaste" onclick='cancelpaste()'>✖️ Cancel Paste</button></span>
+    `
 
     paster.innerHTML = output
 }
 
+function showpaste() {
+    const paster = document.getElementById("paster")
+    paster.style.display = "block"
+}
+
+function cancelpaste() {
+    const paster = document.getElementById("paster")
+    paster.style.display = "none"
+
+    const pastedElement = document.getElementById("pasted")
+    pastedElement.value = ""
+}
+
 function paste() {
-    const pasted = document.getElementById("pasted").value
-    const lines = pasted.split("\n")
-    const selects = document.getElementsByTagName("select")
-    let num = 0
+    const pastedElement = document.getElementById("pasted");
+    const lines = pastedElement.value.split("\n");
 
-    // remove any lines that do not look like
-    // Jewel Slot 1:  imperfect cerebral bloodjewel
-    // Jewel Slot 2:  imperfect cerebral bloodjewel
-    // Jewel Slot 3:  imperfect devout bloodjewel
-    // Jewel Slot 4:  imperfect devout bloodjewel
-    // Jewel Slot 5:  imperfect bellicose bloodjewel
-    // Jewel Slot 6:  polished mercantile bloodjewel
+    pastedElement.value = "";  // Clear the textarea
+    document.getElementById("paster").style.display = "none";  // Hide the container
 
-    // Compose a regex comprised of all of the gem qualities and types for parsing
-    // the lines
-    const qualityRegex = qualities.join("|")
-    const typeRegex = types.join("|")
-    const gemRegex = new RegExp(`(${qualityRegex}) (${typeRegex})`)
+    const qualityRegex = qualities.join("|");
+    const typeRegex = types.join("|");
+    const gemRegex = new RegExp(`(${qualityRegex}) (${typeRegex})`);
 
-    const filtered = lines.filter((line) => {
-        return line.match(gemRegex)
-    })
+    const filtered = lines.filter((line) => line.match(gemRegex));
 
-    // Do we have more than the max_gems? If so, update the max_gems
-    // and redraw the table
-    if(filtered.length > max_gems) {
-        document.getElementById("spinner").value = filtered.length
-        max_gems = filtered.length
-        createTable()
+    if (filtered.length > max_gems) {
+        max_gems = filtered.length;
+        createTable();
     }
 
-    // clear all selects
-    for(const select of selects) {
-        select.value = "none"
+    const selects = document.getElementsByTagName("select"); // Re-fetch selects after table creation
+    let num = 0;
+
+    for (const select of selects) {
+        select.value = "none"; // Clear all selects
     }
 
-    // Use regex to extract the gem quality and type from each line using the
-    // map function to create an array of arrays
     const gemData = filtered.map((line) => {
-        const match = line.match(gemRegex)
-        return [match[1], match[2]]
-    })
+        const match = line.match(gemRegex);
+        return [match[1], match[2]];
+    });
 
-    debug.innerHTML = JSON.stringify(gemData)
+    debug.innerHTML = JSON.stringify(gemData);
 
     // Populate the selects with the gem data
-    for(const gem of gemData) {
-        const quality = gem[0]
-        const type = gem[1]
-        const qualityIndex = qualities.indexOf(quality)
-        const typeIndex = types.indexOf(type)
+    gemData.forEach((gem, index) => {
+        if (index < max_gems) {
+            const qualitySelect = selects[index * 2]; // Assuming quality is first in each group
+            const typeSelect = selects[index * 2 + 1]; // Assuming type is second
 
-        selects[num].value = qualities[qualityIndex]
-        selects[num + max_gems].value = types[typeIndex]
+            qualitySelect.value = gem[0];
+            typeSelect.value = gem[1];
+        }
+    });
 
-        num++
-    }
-
-    gemUpdated()
+    gemUpdated();
 }
 
 function createTable() {
-    let output = ""
-    let num = 1, max = max_gems
+    let output = "";
+    let max = max_gems;
 
-    output = "<table>"
+    output += `<div class="flex-container">`;  // Start of flex container
 
-    // Headers
-    output += "<tr>"
-    do {
-        output += `<th>Gem ${num}</th>`
-    } while(++num <= max)
-    output += "</tr>"
+    for (let num = 1; num <= max; num++) {
+        const qualitydrops =
+            `<option value='none'>none</option>` +
+            qualities.reduce((acc, curr) => `${acc}<option value='${curr}'>${capitalize(curr)}</option>`, "");
 
-    // Gem qualities
-    num = 1
-    output += "<tr>"
-    const qualitydrops =
-        `<option value='none'>none</option>` +
-        qualities.reduce((acc, curr) => `${acc}<option value=${curr}>${capitalize(curr)}</option>`, "")
+        const typedrops =
+            `<option value='none'>none</option>` +
+            types.reduce((acc, curr) => `${acc}<option value='${curr}'>${capitalize(curr)}</option>`, "");
 
-    do {
-        output += `<td><select onchange='gemUpdated()' name='quality${num}'>${qualitydrops}</select></td>`
-    } while (++num <= max)
-    output += "</tr>"
+        output += `<div class="gem-group">
+                      <div class="label">Bloodjewel ${num}</div>
+                      <select class="select quality-select" onchange='gemUpdated()' name='quality${num}'>${qualitydrops}</select>
+                      <select class="select type-select" onchange='gemUpdated()' name='type${num}'>${typedrops}</select>
+                   </div>`;
+    }
 
-    // Gem types
-    num = 1
-    output += "<tr>"
-    const typedrops =
-        `<option value='none'>none</option>` +
-        types.reduce((acc, curr) => `${acc}<option value=${curr}>${capitalize(curr)}</option>`, "")
+    output += `</div>`;  // End of flex container
 
-    do {
-        output += `<td><select onchange='gemUpdated()' name='type${num}'>${typedrops}</select></td>`
-    } while(++num <= max)
-    output += "</tr>"
-
-    // Write the table to the document
-    main.innerHTML = output
+    document.getElementById("main").innerHTML = output;  // Assuming `main` is the ID of your container div
 }
+
 
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
-
-document.getElementById("spinner").addEventListener("change", function () {
-    const newValue = parseInt(this.value, 10) // Convert the value from string to number
-
-    if (newValue >= 2 && newValue <= 15) {
-        max_gems = newValue // Update the global variable max_gems
-        createTable();       // Call the function to redraw the table
-    } else {
-        console.error("Invalid number of gems: ", newValue)
-    }
-
-    resetGems()
-    document.getElementById("output").innerHTML = ""
-});

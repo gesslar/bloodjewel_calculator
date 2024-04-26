@@ -1,0 +1,90 @@
+:root {
+    background-color: black;
+    color: white;
+    font-family: 'Cascadia Mono Light', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
+}
+
+select, option, input {
+    width: 125px;
+    background-color: black;
+    color: white;
+    font-family: 'Cascadia Mono Light', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
+}
+
+.label {
+    color: #ffa600;
+    font-weight: normal ;
+    font-size: .9em;
+}
+
+textarea {
+    width: 100%;
+    height: 5em;
+    border-style: solid;
+    border-color: #ffa600;
+    background-color: black;
+    border-width: 1px;
+    color: white;
+    font-family: 'Cascadia Mono Light', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
+}
+
+.button {
+    background-color: #ffa600;
+    color: black;
+    font-family: 'Cascadia Mono Light', 'Bitstream Vera Sans Mono', 'Courier New', monospace;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.pastebutton {
+    float: right;
+}
+
+#paster {
+    display: none;
+    width: 50em;
+}
+
+#main {
+    width: 50em;
+}
+
+.effect_label {
+    color: #ffa600;
+    font-weight: bold ;
+    font-size: 1em;
+}
+
+.effect_value {
+    color: white;
+    font-weight: normal ;
+    font-size: 1em;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 20px;
+}
+
+.gem-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+}
+
+.label {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.select {
+    width: 100%;

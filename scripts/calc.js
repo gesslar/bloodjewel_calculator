@@ -22,22 +22,25 @@ function resetGems() {
 }
 
 function buildSelectedGems() {
-    let numSelects = selects.length / 2
-    const maxSelects = numSelects
+    const selects = document.getElementsByTagName("select"); // Ensure you fetch the current state of selects
+    const numPairs = selects.length / 2; // Assuming each group has exactly two selects
 
-    selectedGems.length = 0
+    selectedGems.length = 0; // Reset selectedGems
 
-    while(numSelects--) {
-        const gemType = selects[maxSelects + numSelects].value
-        const gemQuality = selects[numSelects].value
+    for (let i = 0; i < numPairs; i++) {
+        const qualitySelect = selects[i * 2]; // Quality is assumed to be the first in each pair
+        const typeSelect = selects[i * 2 + 1]; // Type is assumed to be the second
 
-        if(types.indexOf(gemType) == -1) continue
-        if(qualities.indexOf(gemQuality) == -1) continue
+        const gemQuality = qualitySelect.value;
+        const gemType = typeSelect.value;
+
+        // Validate the selections
+        if (types.indexOf(gemType) === -1 || qualities.indexOf(gemQuality) === -1) continue;
 
         selectedGems.push({
             type: gemType,
             quality: qualities.indexOf(gemQuality)
-        })
+        });
     }
 }
 
@@ -110,6 +113,6 @@ function printEffects() {
     for(const label of labels) {
         if(effects[label].value <= 0) continue
 
-        output.innerHTML += `<p><strong>${label}:</strong> ${effects[label].value}${effects[label].notation}\n`
+        output.innerHTML += `<p><span class="effect_label">${label}:</span> <span class="effect_value">${effects[label].value}${effects[label].notation}</span>\n`
     }
 }
