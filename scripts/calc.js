@@ -51,17 +51,21 @@ function generateEffects() {
         const bonuses = gems[type];
 
         bonuses.forEach(bonus => {
-            const { title, values } = bonus;
+            const { title, values, name, notation } = bonus;
             if (!allBonuses[title]) {
-                allBonuses[title] = [];
+                allBonuses[title] = {
+                    values: [],
+                    name: name, // Capture the name here
+                    notation: notation || "" // Capture the notation here
+                };
             }
-            allBonuses[title].push(values[quality]);
+            allBonuses[title].values.push(values[quality]);
         });
     });
 
     // Now process each type of bonus with diminishing returns
     Object.keys(allBonuses).forEach(title => {
-        const values = allBonuses[title];
+        const values = allBonuses[title].values;
         if (values.length === 0) return;
 
         // Sort values from highest to lowest
@@ -82,8 +86,8 @@ function generateEffects() {
         if (!effects[title]) {
             effects[title] = {
                 value: 0,
-                name: gems[selectedGems[0].type][0].name, // Assuming name and notation are consistent per title
-                notation: gems[selectedGems[0].type][0].notation || ""
+                name: allBonuses[title].name, // Set name from stored bonus data
+                notation: allBonuses[title].notation // Set notation from stored bonus data
             };
         }
 

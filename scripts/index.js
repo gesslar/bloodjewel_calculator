@@ -40,12 +40,10 @@ function paste() {
 
     // Do we have more than the max_gems? If so, update the max_gems
     // and redraw the table
-console.info(`Length: ${filtered.length}, Max: ${max_gems}`)
     if(filtered.length > max_gems) {
         document.getElementById("spinner").value = filtered.length
         max_gems = filtered.length
         createTable()
-        console.info(`Max gems updated to ${max_gems}`)
     }
 
     // clear all selects
