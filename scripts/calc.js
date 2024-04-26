@@ -58,7 +58,6 @@ function generateEffects() {
             }
 
             if(usedTypes.indexOf(type) > -1) {
-                // bonus_value = Math.floor(bonus_value / diminishing_factor)
                 bonus_value = bonus_value / diminishing_factor
             }
             effect.value += bonus_value
