@@ -1,3 +1,7 @@
+const Output = document.getElementById("output").innerHTML
+
+createTable()
+
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1)
 }
@@ -15,6 +19,18 @@ function createTable() {
     } while(++num <= max)
     output += "</tr>"
 
+    // Gem qualities
+    num = 1
+    output += "<tr>"
+    const qualitydrops =
+        `<option value='none'>none</option>` +
+        qualities.reduce((acc, curr) => `${acc}<option value=${curr}>${capitalize(curr)}</option>`, "")
+
+    do {
+        output += `<td><select onchange='gemUpdated()' name='quality${num}'>${qualitydrops}</select></td>`
+    } while (++num <= max)
+    output += "</tr>"
+
     // Gem types
     num = 1
     output += "<tr>"
@@ -27,20 +43,6 @@ function createTable() {
     } while(++num <= max)
     output += "</tr>"
 
-    // Gem qualities
-    num = 1
-    output += "<tr>"
-    const qualitydrops =
-        `<option value='none'>none</option>` +
-        qualities.reduce((acc, curr) => `${acc}<option value=${curr}>${capitalize(curr)}</option>`, "")
-
-    do {
-        output += `<td><select onchange='gemUpdated()' name='quality${num}'>${qualitydrops}</select></td>`
-    } while(++num <= max)
-    output += "</tr>"
-
     // Write the table to the document
     document.getElementById("main").innerHTML = output
 }
-
-createTable()

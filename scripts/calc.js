@@ -10,6 +10,7 @@ function gemUpdated() {
 
     buildSelectedGems()
     generateEffects()
+    floorValues()
     printEffects()
 }
 
@@ -20,8 +21,8 @@ function buildSelectedGems() {
     selectedGems.length = 0
 
     while(numSelects--) {
-        const gemType = selects[numSelects].value
-        const gemQuality = selects[maxSelects + numSelects].value
+        const gemType = selects[maxSelects + numSelects].value
+        const gemQuality = selects[numSelects].value
 
         if(types.indexOf(gemType) == -1) continue
         if(qualities.indexOf(gemQuality) == -1) continue
@@ -57,7 +58,8 @@ function generateEffects() {
             }
 
             if(usedTypes.indexOf(type) > -1) {
-                bonus_value = Math.floor(bonus_value / diminishing_factor)
+                // bonus_value = Math.floor(bonus_value / diminishing_factor)
+                bonus_value = bonus_value / diminishing_factor
             }
             effect.value += bonus_value
             effects[title] = effect
@@ -66,9 +68,16 @@ function generateEffects() {
     }
 }
 
+function floorValues() {
+    for(const label in effects) {
+        effects[label].value = Math.floor(effects[label].value)
+    }
+
+}
+
 function printEffects() {
     const labels = Object.keys(effects)
-    
+
     labels.sort()
 
     for(const label of labels) {
