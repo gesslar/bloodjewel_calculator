@@ -21,6 +21,7 @@ function createPaster() {
 function showpaste() {
     const paster = document.getElementById("paster")
     paster.style.display = "block"
+    pasted.focus()
 }
 
 function cancelpaste() {
@@ -29,6 +30,7 @@ function cancelpaste() {
 
     const pastedElement = document.getElementById("pasted")
     pastedElement.value = ""
+    paster.blur()
 }
 
 function paste() {
@@ -37,6 +39,7 @@ function paste() {
 
     pastedElement.value = "";  // Clear the textarea
     document.getElementById("paster").style.display = "none";  // Hide the container
+    document.getElementById("paster").blur();  // Remove focus from the container
 
     const qualityRegex = qualities.join("|");
     const typeRegex = types.join("|");
