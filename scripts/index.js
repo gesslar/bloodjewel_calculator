@@ -34,7 +34,6 @@ function paste() {
     const typeRegex = types.join("|")
     const gemRegex = new RegExp(`(${qualityRegex}) (${typeRegex})`)
 
-
     const filtered = lines.filter((line) => {
         return line.match(gemRegex)
     })
