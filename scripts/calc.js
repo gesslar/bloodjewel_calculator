@@ -77,7 +77,7 @@ function generateEffects() {
         if (values.length === 0) return;
 
         // Sort values from highest to lowest
-        values.sort((a, b) => b - a);
+        values.sort((a, b) => Math.abs(b) - Math.abs(a))
 
         const mainValue = values[0]; // The highest value, no diminishing returns applied
         let totalValue = mainValue;
@@ -116,7 +116,7 @@ function printEffects() {
     labels.sort()
 
     for(const label of labels) {
-        if(effects[label].value <= 0) continue
+        if(effects[label].value === 0) continue
 
         output.innerHTML += `<div><span class="effect_label">${label}:</span> <span class="effect_value">${effects[label].value}${effects[label].notation}</span></div>`
     }
