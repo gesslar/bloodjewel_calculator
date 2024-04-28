@@ -114,7 +114,7 @@ const gems = {
     ],
     necromantic: [
         {
-            title: "Regen EP",
+            title: "EP Regen",
             name: "regen_ep", values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
         {
@@ -135,7 +135,7 @@ const gems = {
     ],
     savage: [
         {
-            title: "Regen EP",
+            title: "EP Regen",
             name: "regen_ep", values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         },
         {
